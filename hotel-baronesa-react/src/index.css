@@ -1,0 +1,286 @@
+:root{
+    --cor-primaria: #a34123;
+    --cor-analoga1: #cb8404;
+    --cor-analoga2: #c47604;
+    --cor-complementar: #5377a3;
+    --cor-fundo:  #c0a397;
+
+}
+
+
+
+.resposive-banner{
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+body{
+    background-color: var(--cor-fundo);
+    font-family: Arial;
+    color:#000000;
+    margin: 0;
+}
+
+header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: var(--cor-primaria);
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding: 20px;
+    background-color: var(--cor-complementar);
+    margin-top: 50px;
+}
+
+.resposive-banner {
+    width: 100%;
+    height: auto;
+    display: block;
+    
+}
+
+.logo-container{
+    width: 80px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+nav{
+    height: 1000;
+}
+p{
+    text-align: center;
+}
+
+
+h1{
+    text-align: center;
+}
+
+h2{
+    text-align: center;
+
+}
+
+li{
+    text-align: center;
+
+}
+
+img{
+    display: block;
+    margin:auto;
+}
+
+nav#menu li {
+    background-color: var(--cor-fundo);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+nav#menu li:hover{
+    background-color: var(--cor-primaria);
+    text-decoration: none;
+}
+
+nav#menu h1 { 
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    padding: 0;
+    gap: 10px;
+}
+
+nav#menu a{
+    color: black;
+    text-decoration: none;
+}
+
+nav#menu a:hover{
+    color: white;
+    text-decoration: underline;
+}
+
+.login-container {
+    max-width: 400px;
+    margin: 50px auto; 
+    padding: 20px;
+    background-color: var(--cor-fundo);
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+}
+
+input[type="submit"] {
+    background-color: var(--cor-primaria);
+    color: var(--cor-fundo);
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.3s;
+}
+
+input[type="submit"]:hover {
+    background-color: var(--cor-analoga1);
+}
+
+input[type="reset"] {
+    background-color: var(--cor-analoga2);
+    color: var(--cor-fundo);
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.3s;
+}
+
+input[type="reset"]:hover {
+    background-color: var(--cor-complementar);
+}
+
+.user-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 2px solid var(--cor-primaria);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.user-table thead {
+    background-color: var(--cor-primaria) !important;
+    color: white !important;
+}
+
+
+
+.user-table th, 
+.user-table td {
+    background-color: transparent !important;
+}
+
+
+.user-table tbody tr:nth-child(even) {
+    background-color: var(--cor-fundo) !important;
+    color: white !important; 
+}
+
+.user-table tbody tr:nth-child(odd) {
+    background-color: #ffffff !important; 
+}
+
+.user-table tr:nth-child(even) td {
+    color: white !important;
+}
+
+.user-table tbody tr:hover {
+    background-color: var(--cor-analoga2) !important;
+    transition: 0.2s;
+}
+
+.btn-edit, .btn-delete {
+    padding: 5px 10px;
+    margin: 0 5px;
+    cursor: pointer;
+    border: none;
+    border-radius: 3px;
+}
+
+.btn-edit { background-color: var(--cor-analoga1); color: white; }
+.btn-delete { background-color: #d9534f; color: white; }
+
+.container-botao-cadastro {
+    margin: 20px;
+    display: inline-block;
+}
+
+#btnCadastro {
+    background: none;       
+    border: none;           
+    padding: 10px;
+    cursor: pointer;        
+    transition: transform 0.2s; 
+    border-radius: 50%;     
+}
+
+#btnCadastro:hover {
+    background-color: --cor-primaria(163, 65, 35, 0.1); 
+    transform: scale(1.1);                   
+}
+
+.icone-btn {
+    width: 30px; 
+    height: 30px;
+    display: block;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255,255,255, 0.9);
+    font-weight: 500;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: var(--cor-analoga1);
+}
+
+
+
+@media screen and (min-width: 601px) and (max-width: 1024px) {
+   
+    header {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    nav#menu h1 {
+        flex-direction: row; 
+        gap: 15px;
+    }
+
+    .user-table {
+        width: 90%;
+        font-size: 16px;
+    }
+
+    input[type="submit"], input[type="reset"] {
+        width: auto; 
+    }
+}
+
+
+@media screen and (min-width: 1025px) {
+    
+    header {
+        padding: 10px 10%; /* Mais respiro nas laterais */
+    }
+
+    .login-container {
+        max-width: 450px; /* Container de login centralizado e controlado */
+    }
+
+    .resposive-banner {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .navbar-collapse {
+        display: flex !important;
+        flex-basis: auto;
+    }
+
+    .navbar-nav {
+        flex-direction: row !important;
+        gap: 20px; /* Espaço entre os itens */
+    }
+
+    .nav-item {
+        margin-bottom: 0;
+    }
+}
