@@ -8,7 +8,7 @@ export default function ListaUsuarios() {
   const [erro, setErro] = useState(null);
 
   useEffect(() => {
-    fetch('prg04luizcarlosdecastrocarvalho-backend-production.up.railway.app') 
+    fetch('https://prg04luizcarlosdecastrocarvalho-backend-production.up.railway.app/usuarios/findall') 
       .then((response) => {
         if (!response.ok) {
           throw new Error('Falha ao buscar usuários do servidor.');

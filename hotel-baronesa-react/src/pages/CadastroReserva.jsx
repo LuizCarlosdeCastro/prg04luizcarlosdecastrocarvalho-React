@@ -36,7 +36,7 @@ useEffect(() => {
     setUsuarioLogado(usuarioTratado);
 
     // 3. Busca os quartos cadastrados no Backend
-    fetch('prg04luizcarlosdecastrocarvalho-backend-production.up.railway.app')
+    fetch('https://prg04luizcarlosdecastrocarvalho-backend-production.up.railway.app/quartos/findall')
       .then(res => res.json())
       .then(data => { setQuartos(data.content || data || []) })
       .catch(err => console.error("Erro ao buscar quartos:", err));
@@ -94,7 +94,7 @@ const handleSalvar = (e) => {
 
     console.log("JSON QUE SERÁ ENVIADO AO JAVA:", novaReserva); 
 
-    fetch('prg04luizcarlosdecastrocarvalho-backend-production.up.railway.app', {
+    fetch('https://prg04luizcarlosdecastrocarvalho-backend-production.up.railway.app/reservas/save', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(novaReserva)
