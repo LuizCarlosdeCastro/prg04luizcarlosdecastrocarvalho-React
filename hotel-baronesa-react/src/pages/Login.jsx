@@ -7,7 +7,7 @@ export default function Login() {
   const handleLogin = async (dadosDoFormulario) => {
     try {
       // Dispara os dados reais para o Spring Boot
-      const response = await fetch('http://localhost:8080/usuarios/login', {
+      const response = await fetch('prg04luizcarlosdecastrocarvalho-backend-production.up.railway.app', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(dadosDoFormulario) // envia { login, senha }

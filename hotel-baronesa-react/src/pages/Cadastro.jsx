@@ -7,7 +7,7 @@ export default function Cadastro() {
   const handleCadastro = async (dadosDoFormulario) => {
     try {
       // Dispara a requisição POST para salvar na API do Spring Boot
-      const response = await fetch('http://localhost:8080/usuarios/save', {
+      const response = await fetch('prg04luizcarlosdecastrocarvalho-backend-production.up.railway.app', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(dadosDoFormulario)
