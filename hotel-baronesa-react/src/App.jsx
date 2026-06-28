@@ -2,9 +2,13 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import Login from './pages/Login';
-import ListaUsuarios from './pages/ListaUsuarios';
+import ListaUsuarios from './pages/ListaUsuarios.jsx';
+import Cadastro from './pages/Cadastro';
 
 // Importações das páginas
+import CadastroReserva from './pages/CadastroReserva';
+import ListaQuartos from './pages/ListaQuartos';
+
 import Atividade3 from './pages/Atividade3';
 import Sandbox from './pages/Sandbox';
 import Paleta from './pages/Paleta';
@@ -19,17 +23,15 @@ export default function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="login" element={<Login />} />
-          
-          
           <Route path="usuarios" element={<ListaUsuarios />} />
-          
+
+          <Route path="quartos" element={<ListaQuartos />} />
+          <Route path="reservas/nova" element={<CadastroReserva />} />
           
           <Route path="atividade-3" element={<Atividade3 />} />
           <Route path="sandbox" element={<Sandbox />} />
           <Route path="paleta" element={<Paleta />} />
-          
-          
-          <Route path="cadastro" element={<div className="container p-5 text-center"><h3>Tela de Cadastro (Próximo Passo)</h3></div>} />
+          <Route path="cadastro" element={<Cadastro />} />
         </Route>
       </Routes>
     </BrowserRouter>

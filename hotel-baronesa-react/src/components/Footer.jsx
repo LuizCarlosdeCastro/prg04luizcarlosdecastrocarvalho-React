@@ -5,6 +5,7 @@ export default function Footer() {
     <footer className="py-4 mt-auto">
       <div className="container text-center text-white">
         <div className="d-flex justify-content-center gap-4">
+          <Link to="/atividade-3" className="text-white tex-decoration-none text-muted">Atividade 3</Link>
           <Link to="/sandbox" className="text-white text-decoration-none">Sandbox</Link>
           <Link to="/paleta" className="text-white text-decoration-none">Cores</Link>
         </div>
