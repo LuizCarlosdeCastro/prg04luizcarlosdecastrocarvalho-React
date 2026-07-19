@@ -7,7 +7,7 @@ export default function Cadastro() {
   const handleCadastro = async (dadosDoFormulario) => {
     try {
       // Dispara a requisição POST para salvar na API do Spring Boot
-      const response = await fetch('https://prg04luizcarlosdecastrocarvalho-bac.vercel.app/usuarios/save', {
+      const response = await fetch('https://prg04luizcarlosdecastrocarvalho-backend.onrender.com/usuarios/save', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(dadosDoFormulario)

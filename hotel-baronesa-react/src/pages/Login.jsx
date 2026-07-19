@@ -7,7 +7,7 @@ export default function Login() {
   const handleLogin = async (dadosDoFormulario) => {
     try {
       // Dispara os dados reais para o Spring Boot
-      const response = await fetch('https://prg04luizcarlosdecastrocarvalho-bac.vercel.app/usuarios/login', {
+      const response = await fetch('https://prg04luizcarlosdecastrocarvalho-backend.onrender.com/usuarios/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(dadosDoFormulario) // envia { login, senha }
