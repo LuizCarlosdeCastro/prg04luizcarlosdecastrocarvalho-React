@@ -6,7 +6,7 @@ export default function ListaQuartos() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('https://prg04luizcarlosdecastrocarvalho-backend-production.up.railway.app/quartos/findall')
+    fetch('https://prg04luizcarlosdecastrocarvalho-bac.vercel.app/quartos/findall')
       .then(res => res.json())
       .then(data => {
         setQuartos(data.content || data || []);
