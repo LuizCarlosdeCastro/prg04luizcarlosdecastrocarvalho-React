@@ -18,18 +18,18 @@ export default function ListaQuartos() {
       });
   }, []);
 
-  const obterImagemQuarto = (tipo) => {
-    const t = tipo?.toLowerCase() || '';
-    
-    if (t.includes('assombrado')) {
+    const obterImagemQuarto = (categoriaNome) => {
+    const nome = categoriaNome?.toLowerCase() || '';
+  
+     if (nome.includes('assombrado')) {
       return '/assets/images/assombrado.png'; 
     }
-    if (t.includes('luxo') || t.includes('suite')) {
+    if (nome.includes('luxo') || nome.includes('suite')) {
       return '/assets/images/suite_luxo.png'; 
-    }
-   
-    return '/assets/images/quarto_padrao.png'; 
-  };
+  }
+ 
+  return '/assets/images/quarto_padrao.png'; 
+};
 
   return (
     <div className="container my-5">
@@ -54,40 +54,40 @@ export default function ListaQuartos() {
 
       <div className="row row-cols-1 row-cols-md-3 g-4">
         {quartos.map(quarto => {
-          const ehAssombrado = quarto.tipo?.toLowerCase().includes('assombrado');
+  // Acessa o nome de dentro do relacionamento da categoria
+  const nomeCategoria = quarto.categoria?.nome || 'Padrão';
+  const ehAssombrado = nomeCategoria.toLowerCase().includes('assombrado');
 
-          return (
-            <div className="col" key={quarto.id}>
-              {/* Se for assombrado, adiciona uma borda escura/roxa temática, senão usa a borda padrão */}
-              <div className={`card h-100 shadow-sm border-0 ${ehAssombrado ? 'border border-dark bg-dark text-white' : ''}`}
-                   style={ehAssombrado ? { boxShadow: '0 10px 20px rgba(88, 24, 122, 0.3)' } : {}}>
-                
-                <img 
-                  src={obterImagemQuarto(quarto.tipo)} 
-                  className="card-img-top" 
-                  alt="Foto do Quarto" 
-                  style={{ height: '220px', objectFit: 'cover', borderRadius: '8px 8px 0 0' }}
-                />
-                
-                <div className="card-body">
-                  <h5 className="card-title">Quarto Nº {quarto.numero}</h5>
-                  <p className={`card-text mb-2 ${ehAssombrado ? 'text-warning' : 'text-muted'}`}>
-                    Categoria: <strong>{quarto.tipo}</strong>
-                  </p>
-                  
-                  <h6 className={`fw-bold mb-3 ${ehAssombrado ? 'text-danger' : 'text-primary'}`}>
-                    R$ {quarto.precoDiaria?.toFixed(2)} / diária
-                  </h6>
+  return (
+    <div className="col" key={quarto.id}>
+      <div className={`card h-100 shadow-sm border-0 ${ehAssombrado ? 'border border-dark bg-dark text-white' : ''}`}
+           style={ehAssombrado ? { boxShadow: '0 10px 20px rgba(88, 24, 122, 0.3)' } : {}}>
+        
+        <img 
+          src={obterImagemQuarto(nomeCategoria)} 
+          className="card-img-top" 
+          alt="Foto do Quarto" 
+          style={{ height: '220px', objectFit: 'cover', borderRadius: '8px 8px 0 0' }}
+        />
+        
+        <div className="card-body">
+          <h5 className="card-title">Quarto Nº {quarto.numero}</h5>
+          <p className={`card-text mb-2 ${ehAssombrado ? 'text-warning' : 'text-muted'}`}>
+            Categoria: <strong>{nomeCategoria}</strong>
+          </p>
+          
+          <h6 className={`fw-bold mb-3 ${ehAssombrado ? 'text-danger' : 'text-primary'}`}>
+            R$ {quarto.precoDiaria?.toFixed(2)} / diária
+          </h6>
 
-                  {/* Badge temática para o quarto especial */}
-                  <span className={`badge rounded-pill ${ehAssombrado ? 'bg-danger text-dark fw-bold animate-pulse' : 'bg-success'}`}>
-                    {ehAssombrado ? '👻 Cuidado: Atividades Paranormais' : 'Disponível'}
-                  </span>
-                </div>
-              </div>
-            </div>
-          );
-        })}
+          <span className={`badge rounded-pill ${ehAssombrado ? 'bg-danger text-dark fw-bold animate-pulse' : 'bg-success'}`}>
+            {ehAssombrado ? '👻 Cuidado: Atividades Paranormais' : 'Disponível'}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+})}
       </div>
     </div>
   );
