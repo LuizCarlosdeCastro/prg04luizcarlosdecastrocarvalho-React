@@ -5,7 +5,6 @@ import Login from './pages/Login';
 import ListaUsuarios from './pages/ListaUsuarios.jsx';
 import Cadastro from './pages/Cadastro';
 
-
 import CadastroReserva from './pages/CadastroReserva';
 import ListaQuartos from './pages/ListaQuartos';
 import MinhasReservas from './pages/MinhasReservas'; 
@@ -13,7 +12,6 @@ import MinhasReservas from './pages/MinhasReservas';
 import Atividade3 from './pages/Atividade3';
 import Sandbox from './pages/Sandbox';
 import Paleta from './pages/Paleta';
-import Cadastro from './pages/Cadastro';
 
 import './index.css';
 
@@ -28,6 +26,8 @@ export default function App() {
 
           <Route path="quartos" element={<ListaQuartos />} />
           <Route path="reservas/nova" element={<CadastroReserva />} />
+          
+          
           <Route path="reservas/minhas" element={<MinhasReservas />} />
           
           <Route path="atividade-3" element={<Atividade3 />} />

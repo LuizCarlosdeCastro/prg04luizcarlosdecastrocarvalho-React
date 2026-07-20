@@ -42,11 +42,11 @@ export default function Navbar() {
               <Link className="nav-link" to="/quartos">Ver Quartos</Link>
             </li>
 
-            {tipoUsuarioLogado && (
+            {tipoUsuarioLogado !== null && tipoUsuarioLogado !== "" && (
               <li className="nav-item">
-                <Link className="nav-link" to="/reservas/minhas">Minhas Reservas</Link>
+                 <Link className="nav-link" to="/reservas/minhas">Minhas Reservas</Link>
               </li>
-            )}
+              )}
 
             <li className="nav-item">
               <Link className="nav-link" to="/reservas/nova">Nova Reserva</Link>
