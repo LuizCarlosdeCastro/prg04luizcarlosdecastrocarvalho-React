@@ -7,6 +7,8 @@ export default function Navbar() {
 
   const handleLogout = () => {
     localStorage.removeItem('tipoUsuario');
+    localStorage.removeItem('idUsuario');   
+    localStorage.removeItem('nomeUsuario'); 
     navigate('/login');
   };
 
@@ -34,10 +36,17 @@ export default function Navbar() {
             <li className="nav-item">
               <Link className="nav-link" to="/quartos">Ver Quartos</Link>
             </li>
+
+            
+            {tipoUsuarioLogado && (
+              <li className="nav-item">
+                <Link className="nav-link" to="/reservas/minhas">Minhas Reservas</Link>
+              </li>
+            )}
+
             <li className="nav-item">
               <Link className="nav-link" to="/reservas/nova">Nova Reserva</Link>
             </li>
-            
 
             <li className="nav-item ms-lg-3">
               {tipoUsuarioLogado ? (
@@ -46,11 +55,9 @@ export default function Navbar() {
                 </button>
               ) : (
                 <div className="d-flex align-items-center gap-2">
-                  
                   <Link className="btn btn-outline-light d-flex align-items-center" to="/cadastro">
                     Cadastrar
                   </Link>
-                  
                   <Link className="btn btn-dark d-flex align-items-center" to="/login">
                     <img src="/assets/images/Hotel_Guest.ico" alt="" width="20" className="me-2" />
                     Login
