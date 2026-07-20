@@ -49,15 +49,15 @@ export default function ListaUsuarios() {
       
       <div className="row g-4 mb-4">
         <div className="col-md-6 col-lg-4">
-          <div className="card shadow border-0 p-3 bg-dark text-white">
+          <div className="card shadow border-0 p-3" style={{ borderLeft: '5px solid var(--cor-primaria)' }}>
             <small className="text-muted text-uppercase fw-bold">Total de Usuários</small>
-            <h3 className="fw-bold mb-0 mt-1">{usuariosReais.length}</h3>
+            <h3 className="fw-bold mb-0 mt-1" style={{ color: 'var(--cor-primaria)' }}>{usuariosReais.length}</h3>
           </div>
         </div>
         <div className="col-md-6 col-lg-4">
-          <div className="card shadow border-0 p-3 bg-primary text-white" style={{ backgroundColor: 'var(--cor-primaria)' }}>
-            <small className="text-white-50 text-uppercase fw-bold">Total de Reservas</small>
-            <h3 className="fw-bold mb-0 mt-1">{reservasReais.length}</h3>
+          <div className="card shadow border-0 p-3" style={{ borderLeft: '5px solid #198754' }}>
+            <small className="text-muted text-uppercase fw-bold">Total de Reservas</small>
+            <h3 className="fw-bold mb-0 mt-1" style={{ color: '#198754' }}>{reservasReais.length}</h3>
           </div>
         </div>
       </div>
@@ -93,31 +93,15 @@ export default function ListaUsuarios() {
           </li>
         </ul>
 
-        <div className="row mb-4">
-          <div className="col-md-6">
-            <div className="input-group">
-              <span className="input-group-text bg-white">🔍</span>
-              <input 
-                type="text" 
-                id="BuscaPainel" 
-                className="form-control" 
-                placeholder={abaAtiva === 'usuarios' ? "Pesquisar por nome ou e-mail..." : "Pesquisar por hóspede ou quarto..."} 
-              />
-            </div>
-          </div>
-        </div>
-
         {loading && (
           <div className="text-center my-4">
             <div className="spinner-border text-primary" role="status"></div>
-            <p className="mt-2 text-muted">Carregando dados do servidor...</p>
+            <p className="mt-2 text-muted">Carregando dados...</p>
           </div>
         )}
 
         {erro && (
-          <div className="alert alert-danger text-center" role="alert">
-            {erro} - Certifique-se de que o backend está rodando!
-          </div>
+          <div className="alert alert-danger text-center" role="alert">{erro}</div>
         )}
 
         {!loading && !erro && (
@@ -126,63 +110,36 @@ export default function ListaUsuarios() {
               <UserTable dadosUsuarios={usuariosReais} />
             ) : (
               <div className="table-responsive">
-                <table className="table align-middle">
+                <table className="table user-table align-middle">
                   <thead>
                     <tr>
                       <th>ID</th>
                       <th>Hóspede</th>
                       <th>Quarto</th>
                       <th>Período</th>
-                      <th>Serviços</th>
-                      <th className="text-end">Valor Total</th>
+                      <th>Valor Total</th>
                     </tr>
                   </thead>
                   <tbody>
                     {reservasReais.length === 0 ? (
-                      <tr>
-                        <td colSpan="6" className="text-center text-muted py-4">Nenhuma reserva localizada.</td>
-                      </tr>
+                      <tr><td colSpan="5" className="text-center text-muted py-4">Nenhuma reserva encontrada.</td></tr>
                     ) : (
-                      reservasReais.map((reserva) => {
-                        const categoriaNome = reserva.quarto?.categoria?.nome || 'Padrão';
-                        const ehAssombrado = categoriaNome.toLowerCase().includes('assombrado');
-
-                        return (
-                          <tr key={reserva.id}>
-                            <td><span className="badge bg-light text-dark border">#{reserva.id}</span></td>
-                            <td>
-                              <div className="fw-bold">{reserva.cliente?.nome || 'Desconhecido'}</div>
-                              <small className="text-muted">{reserva.cliente?.login}</small>
-                            </td>
-                            <td>
-                              <div>Nº {reserva.quarto?.numero || 'N/A'}</div>
-                              <small className={`badge ${ehAssombrado ? 'bg-danger text-dark fw-bold' : 'bg-primary-subtle text-primary'}`}>
-                                {ehAssombrado ? '👻 ' : ''}{categoriaNome}
-                              </small>
-                            </td>
-                            <td>
-                              <small className="d-block text-muted">Entrada: {reserva.dataCheckIn}</small>
-                              <small className="d-block text-muted">Saída: {reserva.dataCheckOut}</small>
-                            </td>
-                            <td>
-                              {reserva.servicosAdicionais && reserva.servicosAdicionais.length > 0 ? (
-                                <div className="d-flex flex-wrap gap-1" style={{ maxWidth: '200px' }}>
-                                  {reserva.servicosAdicionais.map((serv, idx) => (
-                                    <span key={idx} className="badge bg-light text-secondary border" style={{ fontSize: '10px' }}>
-                                      {serv.nome}
-                                    </span>
-                                  ))}
-                                </div>
-                              ) : (
-                                <span className="text-muted small">-</span>
-                              )}
-                            </td>
-                            <td className="text-end fw-bold text-primary">
-                              R$ {reserva.pagamento?.valor?.toFixed(2) || '0.00'}
-                            </td>
-                          </tr>
-                        );
-                      })
+                      reservasReais.map((reserva) => (
+                        <tr key={reserva.id}>
+                          <td>{reserva.id}</td>
+                          <td>
+                            <div className="fw-bold">{reserva.cliente?.nome || 'Desconhecido'}</div>
+                          </td>
+                          <td>Nº {reserva.quarto?.numero || 'N/A'}</td>
+                          <td>
+                            {reserva.dataCheckIn} <br/> 
+                            <small className="text-muted">até {reserva.dataCheckOut}</small>
+                          </td>
+                          <td className="fw-bold" style={{ color: 'var(--cor-primaria)' }}>
+                            R$ {reserva.pagamento?.valor?.toFixed(2) || '0.00'}
+                          </td>
+                        </tr>
+                      ))
                     )}
                   </tbody>
                 </table>
@@ -190,10 +147,6 @@ export default function ListaUsuarios() {
             )}
           </>
         )}
-
-        <div className="mt-3">
-          <Link to="/" className="text-decoration-none text-muted small">← Voltar para Página inicial</Link>
-        </div>
       </div>
     </div>
   );
