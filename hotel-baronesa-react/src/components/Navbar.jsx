@@ -1,14 +1,19 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 export default function Navbar() {
   const navigate = useNavigate();
+  const location = useLocation(); 
   
-  const tipoUsuarioLogado = localStorage.getItem('tipoUsuario');
+  const [tipoUsuarioLogado, setTipoUsuarioLogado] = useState(null);
+
+  useEffect(() => {
+    setTipoUsuarioLogado(localStorage.getItem('tipoUsuario'));
+  }, [location]);
 
   const handleLogout = () => {
-    localStorage.removeItem('tipoUsuario');
-    localStorage.removeItem('idUsuario');   
-    localStorage.removeItem('nomeUsuario'); 
+    localStorage.clear(); 
+    setTipoUsuarioLogado(null);
     navigate('/login');
   };
 
@@ -37,7 +42,6 @@ export default function Navbar() {
               <Link className="nav-link" to="/quartos">Ver Quartos</Link>
             </li>
 
-            
             {tipoUsuarioLogado && (
               <li className="nav-item">
                 <Link className="nav-link" to="/reservas/minhas">Minhas Reservas</Link>
