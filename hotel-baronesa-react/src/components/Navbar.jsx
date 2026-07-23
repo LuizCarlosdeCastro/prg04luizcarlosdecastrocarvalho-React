@@ -34,7 +34,7 @@ export default function Navbar() {
             
             {tipoUsuarioLogado === 'ADMIN' && (
               <li className="nav-item">
-                <Link className="nav-link text-warning fw-bold" to="/usuarios">Usuários</Link>
+                <Link className="nav-link text-warning fw-bold" to="/usuarios">Dashboard</Link>
               </li>
             )}
 
