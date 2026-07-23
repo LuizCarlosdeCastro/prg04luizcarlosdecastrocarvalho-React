@@ -34,40 +34,53 @@ const handleAbrirEdicao = (user) => {
     setFormDados({ ...formDados, [name]: value });
   };
 
-  const handleSalvarEdicao = async (e) => {
+const handleSalvarEdicao = async (e) => {
   e.preventDefault();
   if (!usuarioEditando) return;
+
+  if (!formDados.senha || formDados.senha.trim() === '') {
+    alert('Como o DTO do sistema exige validação completa, por favor informe a senha (ou digite uma nova).');
+    return;
+  }
+
+  const token = localStorage.getItem('token');
+
+  const tipoFormatado = (formDados.tipoUsuario || 'CLIENTE').toUpperCase();
 
   const payload = {
     nome: formDados.nome,
     email: formDados.email,
-    login: formDados.login,
-    tipoUsuario: formDados.tipoUsuario,
-    senha: formDados.senha.trim() !== '' ? formDados.senha : usuarioEditando.senha
+    login: formDados.login || formDados.email,
+    senha: formDados.senha,
+    tipoUsuario: tipoFormatado
   };
 
   try {
     const response = await fetch(
-      `https://prg04luizcarlosdecastrocarvalho-backend.onrender.com/usuarios/${usuarioEditando.id}`,
+      `https://prg04luizcarlosdecastrocarvalho-backend.onrender.com/usuarios/update/${usuarioEditando.id}`,
       {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+        },
         body: JSON.stringify(payload)
       }
     );
 
     if (!response.ok) {
-      throw new Error('Falha ao atualizar usuário no servidor.');
+      const errorData = await response.text();
+      console.error('Resposta de erro do Spring Boot:', errorData);
+      throw new Error(errorData || `Erro ${response.status}`);
     }
 
     alert('Usuário atualizado com sucesso!');
     handleFecharModal();
-    
     if (recarregarDados) recarregarDados();
 
   } catch (error) {
     console.error('Erro na atualização:', error);
-    alert('Erro ao atualizar usuário. Verifique as informações fornecidas.');
+    alert(`Erro ao atualizar usuário: ${error.message}`);
   }
 };
 

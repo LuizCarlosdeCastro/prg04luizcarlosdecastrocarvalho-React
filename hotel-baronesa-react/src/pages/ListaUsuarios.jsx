@@ -29,45 +29,45 @@ export default function ListaUsuarios() {
   const BASE_URL = 'https://prg04luizcarlosdecastrocarvalho-backend.onrender.com';
 
   const carregarDados = useCallback(() => {
+    const token = localStorage.getItem('token');
+    const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+    
     Promise.all([
-      fetch(`${BASE_URL}/usuarios/findall`),
-      fetch(`${BASE_URL}/reservas/findall`),
-      fetch(`${BASE_URL}/servicos-adicionais/findall`),
-      fetch(`${BASE_URL}/categorias/findall`).catch(() => null) // Fallback caso rota não exista
+      fetch(`${BASE_URL}/usuarios/findall`, { headers }),
+      fetch(`${BASE_URL}/reservas/findall`, { headers }),
+      fetch(`${BASE_URL}/servicos-adicionais/findall`, { headers }),
+      fetch(`${BASE_URL}/categorias-quarto/findall`, { headers }) 
     ])
       .then(async ([resUsuarios, resReservas, resServicos, resCategorias]) => {
-        if (!resUsuarios.ok || !resReservas.ok) {
-          throw new Error('Falha ao buscar dados do servidor.');
-        }
+      const dataUsuarios = resUsuarios.ok ? await resUsuarios.json() : [];
+      const dataReservas = resReservas.ok ? await resReservas.json() : [];
+      const dataServicos = resServicos.ok ? await resServicos.json() : [];
+      const dataCategorias = resCategorias && resCategorias.ok ? await resCategorias.json() : [];
 
-        const dataUsuarios = await resUsuarios.json();
-        const dataReservas = await resReservas.json();
-        const dataServicos = resServicos.ok ? await resServicos.json() : [];
-        const dataCategorias = (resCategorias && resCategorias.ok) ? await resCategorias.json() : [];
+      const listaDeUsuarios = dataUsuarios.content || dataUsuarios || [];
+      const dadosFormatados = listaDeUsuarios.map((user) => ({
+        id: user.id,
+        nome: user.nome,
+        email: user.email,
+        login: user.login || user.email,
+        tipoUsuario: user.tipoUsuario,
+        status: user.tipoUsuario === 'ADMIN' ? 'Admin' : 'Ativo',
+        badge: user.tipoUsuario === 'ADMIN' ? 'bg-primary' : 'bg-success'
+      }));
 
-        const listaDeUsuarios = dataUsuarios.content || dataUsuarios || [];
-        const dadosFormatados = listaDeUsuarios.map((user) => ({
-          id: user.id,
-          nome: user.nome,
-          email: user.email,
-          login: user.login,
-          tipoUsuario: user.tipoUsuario,
-          status: user.tipoUsuario === 'ADMIN' ? 'Admin' : 'Ativo',
-          badge: user.tipoUsuario === 'ADMIN' ? 'bg-primary' : 'bg-success'
-        }));
-
-        setUsuariosReais(dadosFormatados);
-        setReservasReais(dataReservas.content || dataReservas || []);
-        setServicosReais(dataServicos);
-        setCategoriasQuarto(dataCategorias);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error('Erro ao carregar dados:', error);
-        setErro(error.message);
-        setLoading(false);
-      });
-  }, []);
+      setUsuariosReais(dadosFormatados);
+      setReservasReais(dataReservas.content || dataReservas || []);
+      setServicosReais(dataServicos.content || dataServicos || []);
+      
+      setCategoriasQuarto(dataCategorias.content || dataCategorias || []);
+      setLoading(false);
+    })
+    .catch((error) => {
+      console.error('Erro ao carregar dados:', error);
+      setErro(error.message);
+      setLoading(false);
+    });
+}, []);
 
   useEffect(() => {
     carregarDados();
