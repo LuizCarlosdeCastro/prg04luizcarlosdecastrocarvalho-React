@@ -74,30 +74,41 @@ export default function ListaUsuarios() {
   }, [carregarDados]);
 
   const handleSalvarQuarto = async (e) => {
-    e.preventDefault();
-    try {
-      const payload = {
-        numero: formQuarto.numero,
-        precoDiaria: parseFloat(formQuarto.precoDiaria),
-        categoria: { id: parseInt(formQuarto.categoriaId) }
-      };
+  e.preventDefault();
+  const token = localStorage.getItem('token');
 
-      const res = await fetch(`${BASE_URL}/quartos/save`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
+  try {
+    const payload = {
+      numero: formQuarto.numero,
+      precoDiaria: parseFloat(formQuarto.precoDiaria),
+      categoria: { 
+        id: parseInt(formQuarto.categoriaId) 
+      }
+    };
 
-      if (!res.ok) throw new Error('Erro ao salvar quarto.');
+    const res = await fetch(`${BASE_URL}/quartos/save`, {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      },
+      body: JSON.stringify(payload)
+    });
 
-      alert('Quarto cadastrado com sucesso!');
-      setModalQuartoAberto(false);
-      setFormQuarto({ numero: '', precoDiaria: '', categoriaId: '' });
-      carregarDados();
-    } catch (err) {
-      alert('Erro ao cadastrar quarto. Verifique se o número é único.');
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(errorText || 'Erro ao salvar quarto.');
     }
-  };
+
+    alert('Quarto cadastrado com sucesso!');
+    setModalQuartoAberto(false);
+    setFormQuarto({ numero: '', precoDiaria: '', categoriaId: '' });
+    carregarDados();
+  } catch (err) {
+    console.error('Erro ao cadastrar quarto:', err);
+    alert('Erro ao cadastrar quarto. Verifique os dados fornecidos.');
+  }
+};
 
   const handleSalvarServico = async (e) => {
     e.preventDefault();
@@ -309,12 +320,17 @@ export default function ListaUsuarios() {
                       required
                     >
                       <option value="">Selecione uma categoria...</option>
-                      {categoriasQuarto.map((cat) => (
+                      {categoriasQuarto && categoriasQuarto.map((cat) => (
                         <option key={cat.id} value={cat.id}>
-                          {cat.nome || cat.tipo || `Categoria #${cat.id}`}
+                          {cat.nome} 
                         </option>
                       ))}
                     </select>
+                    {categoriasQuarto.length === 0 && (
+                      <small className="text-danger d-block mt-1">
+                        Nenhuma categoria encontrada no servidor.
+                      </small>
+                    )}
                   </div>
                 </div>
                 <div className="modal-footer">
