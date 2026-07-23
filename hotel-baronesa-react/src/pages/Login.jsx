@@ -4,33 +4,12 @@ import LoginForm from '../components/LoginForm';
 export default function Login() {
   const navigate = useNavigate();
 
-  const handleLogin = async (dadosDoFormulario) => {
-    try {
-      // Dispara os dados reais para o Spring Boot
-      const response = await fetch('https://prg04luizcarlosdecastrocarvalho-backend.onrender.com/usuarios/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(dadosDoFormulario) // envia { login, senha }
-      });
-
-      if (response.ok) {
-        const usuarioLogado = await response.json();
-
-        console.log("EXATAMENTE O QUE O SPRING BOOT DEVOLVEU NO LOGIN:", usuarioLogado);
-        
-        localStorage.setItem('tipoUsuario', usuarioLogado.tipoUsuario); 
-        localStorage.setItem('idUsuario', usuarioLogado.id);
-        localStorage.setItem('nomeUsuario', usuarioLogado.nome);
-        
-        alert(`Bem-vindo, ${usuarioLogado.nome}!`);
-        navigate('/'); 
-      } else {
-        alert('Usuário ou senha incorretos!');
-      }
-    } catch (error) {
-      console.error('Erro ao conectar ao servidor:', error);
-      alert('Erro ao conectar com o banco de dados.');
-    }
+  const handleLoginSuccess = (usuarioLogado) => {
+    console.log("Usuário logado com sucesso:", usuarioLogado);
+    
+    alert(`Bem-vindo, ${usuarioLogado.nome}!`);
+    
+    navigate('/'); 
   };
 
   return (
@@ -42,8 +21,7 @@ export default function Login() {
               <h1 className="h3 mb-3 fw-normal">Login de usuário</h1>
             </div>
 
-            {/* Passa a função que lida com a API */}
-            <LoginForm onLoginSuccess={handleLogin} />
+            <LoginForm onLoginSuccess={handleLoginSuccess} />
 
           </div>
           <div className="text-center mt-3">
