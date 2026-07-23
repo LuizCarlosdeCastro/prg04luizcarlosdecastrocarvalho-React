@@ -6,14 +6,19 @@ export default function Navbar() {
   const location = useLocation(); 
   
   const [tipoUsuarioLogado, setTipoUsuarioLogado] = useState(null);
+  const [nomeUsuarioLogado, setNomeUsuarioLogado] = useState('');
 
   useEffect(() => {
     setTipoUsuarioLogado(localStorage.getItem('tipoUsuario'));
+    
+    const nomeSalvo = localStorage.getItem('nomeUsuario');
+    setNomeUsuarioLogado(nomeSalvo || '');
   }, [location]);
 
   const handleLogout = () => {
     localStorage.clear(); 
     setTipoUsuarioLogado(null);
+    setNomeUsuarioLogado('');
     navigate('/login');
   };
 
@@ -30,11 +35,13 @@ export default function Navbar() {
         </button>
 
         <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav ms-auto align-items-center">
+          <ul className="navbar-nav ms-auto align-items-center gap-2">
             
             {tipoUsuarioLogado === 'ADMIN' && (
               <li className="nav-item">
-                <Link className="nav-link text-warning fw-bold" to="/usuarios">Dashboard</Link>
+                <Link className="nav-link text-warning fw-bold" to="/usuarios">
+                  📊 Dashboard
+                </Link>
               </li>
             )}
 
@@ -42,21 +49,55 @@ export default function Navbar() {
               <Link className="nav-link" to="/quartos">Ver Quartos</Link>
             </li>
 
-            {tipoUsuarioLogado !== null && tipoUsuarioLogado !== "" && (
+            {tipoUsuarioLogado && (
               <li className="nav-item">
-                 <Link className="nav-link" to="/reservas/minhas">Minhas Reservas</Link>
+                <Link className="nav-link" to="/reservas/minhas">Minhas Reservas</Link>
               </li>
-              )}
+            )}
 
             <li className="nav-item">
               <Link className="nav-link" to="/reservas/nova">Nova Reserva</Link>
             </li>
 
-            <li className="nav-item ms-lg-3">
+            <li className="nav-item ms-lg-2">
               {tipoUsuarioLogado ? (
-                <button className="btn btn-danger d-flex align-items-center" onClick={handleLogout}>
-                  Sair
-                </button>
+                <div className="dropdown">
+                  <button
+                    className="btn btn-outline-light dropdown-toggle d-flex align-items-center gap-2"
+                    type="button"
+                    id="dropdownMenuUser"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <span 
+                      className="bg-light text-dark rounded-circle d-inline-flex align-items-center justify-content-center fw-bold"
+                      style={{ width: '28px', height: '28px', fontSize: '14px' }}
+                    >
+                      {nomeUsuarioLogado.charAt(0).toUpperCase() || 'U'}
+                    </span>
+                    <span>{nomeUsuarioLogado || 'Minha Conta'}</span>
+                  </button>
+
+                  <ul className="dropdown-menu dropdown-menu-end shadow" aria-labelledby="dropdownMenuUser">
+                    <li className="px-3 py-2 border-bottom">
+                      <small className="text-muted d-block">Logado como</small>
+                      <strong className="text-dark d-block text-truncate" style={{ maxWidth: '180px' }}>
+                        {nomeUsuarioLogado}
+                      </strong>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item d-flex align-items-center gap-2 mt-1" to="/perfil">
+                        ✏️ Editar Perfil
+                      </Link>
+                    </li>
+                    <li><hr className="dropdown-divider" /></li>
+                    <li>
+                      <button className="dropdown-item text-danger d-flex align-items-center gap-2" onClick={handleLogout}>
+                        🚪 Sair
+                      </button>
+                    </li>
+                  </ul>
+                </div>
               ) : (
                 <div className="d-flex align-items-center gap-2">
                   <Link className="btn btn-outline-light d-flex align-items-center" to="/cadastro">
@@ -69,6 +110,7 @@ export default function Navbar() {
                 </div>
               )}
             </li>
+
           </ul>
         </div>
       </div>

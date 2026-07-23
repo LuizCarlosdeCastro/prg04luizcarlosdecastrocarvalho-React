@@ -4,7 +4,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import ListaUsuarios from './pages/ListaUsuarios.jsx';
 import Cadastro from './pages/Cadastro';
-
+import Perfil from './pages/Perfil';
 import CadastroReserva from './pages/CadastroReserva';
 import ListaQuartos from './pages/ListaQuartos';
 import MinhasReservas from './pages/MinhasReservas'; 
@@ -26,7 +26,7 @@ export default function App() {
 
           <Route path="quartos" element={<ListaQuartos />} />
           <Route path="reservas/nova" element={<CadastroReserva />} />
-          
+          <Route path="/perfil" element={<Perfil />} />
           
           <Route path="reservas/minhas" element={<MinhasReservas />} />
           
