@@ -12,17 +12,17 @@ export default function UserTable({ dadosUsuarios = [], recarregarDados }) {
     tipoUsuario: 'CLIENTE'
   });
 
-  const handleAbrirEdicao = (user) => {
-    setUsuarioEditando(user);
-    setFormDados({
-      nome: user.nome || '',
-      email: user.email || '',
-      senha: '', 
-      login: user.login || user.email || '', 
-      tipoUsuario: user.status === 'Admin' ? 'ADMIN' : 'CLIENTE'
-    });
-    setModalAberto(true);
-  };
+const handleAbrirEdicao = (user) => {
+  setUsuarioEditando(user);
+  setFormDados({
+    nome: user.nome || '',
+    email: user.email || '',
+    senha: '', 
+    login: user.login || user.email || '',
+    tipoUsuario: user.tipoUsuario || (user.status === 'Admin' ? 'ADMIN' : 'CLIENTE')
+  });
+  setModalAberto(true);
+};
 
   const handleFecharModal = () => {
     setModalAberto(false);
@@ -35,33 +35,41 @@ export default function UserTable({ dadosUsuarios = [], recarregarDados }) {
   };
 
   const handleSalvarEdicao = async (e) => {
-    e.preventDefault();
-    if (!usuarioEditando) return;
+  e.preventDefault();
+  if (!usuarioEditando) return;
 
-    try {
-      const response = await fetch(
-        `https://prg04luizcarlosdecastrocarvalho-backend.onrender.com/usuarios/${usuarioEditando.id}`,
-        {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formDados)
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error('Falha ao atualizar o usuário no servidor.');
-      }
-
-      alert('Usuário atualizado com sucesso!');
-      handleFecharModal();
-      
-      if (recarregarDados) recarregarDados();
-
-    } catch (error) {
-      console.error('Erro na atualização:', error);
-      alert('Erro ao atualizar usuário. Verifique se preencheu todos os campos.');
-    }
+  const payload = {
+    nome: formDados.nome,
+    email: formDados.email,
+    login: formDados.login,
+    tipoUsuario: formDados.tipoUsuario,
+    senha: formDados.senha.trim() !== '' ? formDados.senha : usuarioEditando.senha
   };
+
+  try {
+    const response = await fetch(
+      `https://prg04luizcarlosdecastrocarvalho-backend.onrender.com/usuarios/${usuarioEditando.id}`,
+      {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('Falha ao atualizar usuário no servidor.');
+    }
+
+    alert('Usuário atualizado com sucesso!');
+    handleFecharModal();
+    
+    if (recarregarDados) recarregarDados();
+
+  } catch (error) {
+    console.error('Erro na atualização:', error);
+    alert('Erro ao atualizar usuário. Verifique as informações fornecidas.');
+  }
+};
 
   const handleExcluir = async (id) => {
     const confirmou = window.confirm(`Tem certeza que deseja excluir o usuário #${id}?`);
