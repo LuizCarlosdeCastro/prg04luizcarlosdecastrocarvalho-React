@@ -194,7 +194,7 @@ const handleAbrirEdicao = (user) => {
                       value={formDados.senha}
                       onChange={handleInputChange}
                       placeholder="Digite uma nova senha"
-                      required
+  
                     />
                   </div>
 
