@@ -9,32 +9,46 @@ export default function LoginForm({ onLoginSuccess }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (carregando) return;
+
     setCarregando(true);
 
     try {
       const response = await fetch('https://prg04luizcarlosdecastrocarvalho-backend.onrender.com/usuarios/login', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
         body: JSON.stringify({ login, senha })
       });
 
       if (!response.ok) {
-        throw new Error('Credenciais inválidas. Verifique seu usuário e senha.');
+        if (response.status === 401 || response.status === 400 || response.status === 404) {
+          alert('Usuário ou senha incorretos.');
+        } else {
+          alert('Erro no servidor ao tentar fazer login. Tente novamente mais tarde.');
+        }
+        return; 
       }
 
       const data = await response.json();
 
-      localStorage.setItem('nomeUsuario', data.nome || 'Usuário');
-      localStorage.setItem('tipoUsuario', data.tipoUsuario || 'CLIENTE');
-      localStorage.setItem('idUsuario', data.id || '');
+      if (data) {
+        localStorage.setItem('nomeUsuario', data.nome || 'Usuário');
+        localStorage.setItem('tipoUsuario', data.tipoUsuario || 'CLIENTE');
+        localStorage.setItem('idUsuario', data.id || '');
 
-      if (onLoginSuccess) {
-        onLoginSuccess(data);
+        if (onLoginSuccess) {
+          onLoginSuccess(data);
+        }
+
+        navigate('/');
       }
-
-      navigate('/');
     } catch (error) {
-      alert(error.message);
+      console.error('Erro na requisição de login:', error);
+      alert('Não foi possível conectar ao servidor. Verifique sua conexão.');
     } finally {
       setCarregando(false);
     }
